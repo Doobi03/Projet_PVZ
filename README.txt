@@ -1,6 +1,6 @@
 Projet Pvz - BackEnd
 
-Julien Thepaut - Groupe DA 2
+Julien Thepaut - Groupe MIN 2
 
 Arborescence du projet : 
 
