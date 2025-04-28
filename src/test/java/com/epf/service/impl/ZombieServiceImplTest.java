@@ -13,6 +13,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+//Tests unitaires de ZombieServiceImpl
 class ZombieServiceImplTest {
 
     private ZombieDAO zombieDAO;

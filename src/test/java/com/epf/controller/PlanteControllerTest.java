@@ -1,98 +1,99 @@
-//package com.epf.controller;
-//
-//import com.epf.dto.PlanteDTO;
-//import com.epf.service.PlanteService;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-//
-//import java.util.List;
-//
-//import static org.mockito.Mockito.*;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//
-//public class PlanteControllerTest {
-//
-//    @Mock
-//    private PlanteService planteService;
-//
-//    @InjectMocks
-//    private PlanteController planteController;
-//
-//    private MockMvc mockMvc;
-//
-//    @BeforeEach
-//    void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//        mockMvc = MockMvcBuilders.standaloneSetup(planteController).build();
-//    }
-//
-//    @Test
-//    void testGetAllPlantes() throws Exception {
-//        List<PlanteDTO> plantes = List.of(new PlanteDTO(1L, "Plante A", 100, 1.5, 10, 5,2,"feu" , "path_image"));
-//        when(planteService.getAllPlantes()).thenReturn(plantes);
-//
-//        mockMvc.perform(get("/CoursEpfBack/plantes"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$[0].nom").value("Plante A"));
-//    }
-//
-//    @Test
-//    void testGetPlanteById() throws Exception {
-//        PlanteDTO plante = new PlanteDTO(1L, "Plante A", 100, 1.5, 10, 5,2,"feu" , "path_image");
-//        when(planteService.getPlanteById(1L)).thenReturn(plante);
-//
-//        mockMvc.perform(get("/CoursEpfBack/plantes/{id}", 1L))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.nom").value("Plante A"));
-//    }
-//
-//    @Test
-//    void testGetPlanteByIdNotFound() throws Exception {
-//        when(planteService.getPlanteById(1L)).thenReturn(null);
-//
-//        mockMvc.perform(get("/CoursEpfBack/plantes/{id}", 1L))
-//                .andExpect(status().isNotFound());
-//    }
-//
-//    @Test
-//    void testCreatePlante() throws Exception {
-//        PlanteDTO planteDTO = new PlanteDTO(1L, "Plante A", 100, 1.5, 10, 5,2,"feu" , "path_image");
-//
-//        mockMvc.perform(post("/CoursEpfBack/plantes")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{\"nom\":\"Plante B\",\"point_de_vie\":120,\"attaque_par_seconde\":2.0,\"degat_attaque\":15,\"vitesse_de_deplacement\":2.5,\"chemin_image\":\"path_image\",\"id_map\":1}"))
-//                .andExpect(status().isCreated());
-//
-//        verify(planteService, times(1)).createPlante(any(PlanteDTO.class));
-//    }
-//
-//    @Test
-//    void testUpdatePlante() throws Exception {
-//        PlanteDTO planteDTO = new PlanteDTO(1L, "Plante A", 100, 1.5, 10, 5,2,"feu" , "path_image");
-//
-//        mockMvc.perform(put("/CoursEpfBack/plantes/{id}", 1L)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{\"nom\":\"Plante C\",\"point_de_vie\":150,\"attaque_par_seconde\":2.5,\"degat_attaque\":20,\"vitesse_de_deplacement\":3.0,\"chemin_image\":\"new_path_image\",\"id_map\":2}"))
-//                .andExpect(status().isOk());
-//
-//        verify(planteService, times(1)).updatePlante(eq(1L), any(PlanteDTO.class));
-//    }
-//
-//    @Test
-//    void testDeletePlante() throws Exception {
-//        doNothing().when(planteService).deletePlante(1L);
-//
-//        mockMvc.perform(delete("/CoursEpfBack/plantes/{id}", 1L))
-//                .andExpect(status().isNoContent());
-//
-//        verify(planteService, times(1)).deletePlante(1L);
-//    }
-//}
+package com.epf.controller;
+
+import com.epf.dto.PlanteDTO;
+import com.epf.service.PlanteService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import java.util.Arrays;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+//Tests unitaires de PlanteController
+class PlanteControllerTest {
+
+    @Mock
+    private PlanteService planteService;
+
+    @InjectMocks
+    private PlanteController planteController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testGetAllPlantes() {
+        PlanteDTO plante1 = new PlanteDTO(
+                1L, "Tournesol", 100, 0.0, 0, 50, 25.0, "Produit du soleil", "chemin1.png"
+        );
+        PlanteDTO plante2 = new PlanteDTO(
+                2L, "Pisto-pois", 150, 1.5, 20, 100, 0.0, "Attaque", "chemin2.png"
+        );
+        List<PlanteDTO> mockPlantes = Arrays.asList(plante1, plante2);
+
+        when(planteService.getAllPlantes()).thenReturn(mockPlantes);
+
+        List<PlanteDTO> result = planteController.getAllPlantes();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        verify(planteService, times(1)).getAllPlantes();
+    }
+
+    @Test
+    void testGetPlanteById() {
+        PlanteDTO plante = new PlanteDTO(
+                1L, "Noix", 300, 0.0, 0, 50, 0.0, "Bloque les zombies", "chemin_noix.png"
+        );
+
+        when(planteService.getPlanteById(1L)).thenReturn(plante);
+
+        PlanteDTO result = planteController.getPlanteById(1L);
+
+        assertNotNull(result);
+        assertEquals(1L, result.getId_plante());
+        assertEquals("Noix", result.getNom());
+        assertEquals(300, result.getPoint_de_vie());
+        assertEquals(0.0, result.getAttaque_par_seconde());
+        assertEquals(0, result.getDegat_attaque());
+        assertEquals(50, result.getCout());
+        assertEquals(0.0, result.getSoleil_par_seconde());
+        assertEquals("Bloque les zombies", result.getEffet());
+        assertEquals("chemin_noix.png", result.getChemin_image());
+        verify(planteService, times(1)).getPlanteById(1L);
+    }
+
+    @Test
+    void testCreatePlante() {
+        PlanteDTO plante = new PlanteDTO(
+                0L, "Champignon", 50, 1.0, 15, 25, 0.0, "Attaque la nuit", "chemin_champi.png"
+        );
+
+        planteController.createPlante(plante);
+
+        verify(planteService, times(1)).createPlante(plante);
+    }
+
+    @Test
+    void testUpdatePlante() {
+        PlanteDTO plante = new PlanteDTO(
+                1L, "Pisto-pois Gelé", 150, 1.5, 20, 175, 0.0, "Ralenti les zombies", "chemin_gel.png"
+        );
+
+        planteController.updatePlante(1L, plante);
+
+        verify(planteService, times(1)).updatePlante(1L, plante);
+    }
+
+    @Test
+    void testDeletePlante() {
+        planteController.deletePlante(1L);
+
+        verify(planteService, times(1)).deletePlante(1L);
+    }
+}

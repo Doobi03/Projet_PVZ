@@ -12,6 +12,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+//Tests unitaires de MapServiceImpl
 class MapServiceImplTest {
 
     private MapDAO mapDAO;

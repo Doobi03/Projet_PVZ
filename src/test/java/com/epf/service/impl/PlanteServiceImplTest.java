@@ -12,6 +12,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+//Tests unitaires de PlanteServiceImpl
 class PlanteServiceImplTest {
 
     private PlanteDAO planteDAO;

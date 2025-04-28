@@ -15,8 +15,8 @@ public class ZombieDAOImpl implements ZombieDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ZombieDAOImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ZombieDAOImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     //Création d'un mapper qui appelle les seters plutôt que de devoir les renseigner dans chaque méthode
